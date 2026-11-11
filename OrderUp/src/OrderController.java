@@ -1,35 +1,42 @@
 /**
- * Controller: takes raw input from the view, validates it, calls
- * the model, and tells the view what to show. It stores no order
- * data itself.
+ * Controller: takes raw input from the view, validates it, calls the model, and
+ * tells the view what to show. It stores no order data itself.
  */
-public class OrderController {
+public class OrderController
+{
 
     public static final int MAX_NAME_LENGTH = 100;
 
     private final OrderQueue queue;
     private final OrderView view;
 
-    public OrderController(OrderQueue queue, OrderView view) {
+    public OrderController(OrderQueue queue, OrderView view)
+    {
         this.queue = queue;
         this.view = view;
     }
 
+
     /**
      * Runs the console menu until the user exits or the input ends.
      */
-    public void run() {
+    public void run()
+    {
         boolean running = true;
 
-        while (running) {
+        while (running)
+        {
             view.showMenu();
             String choice = view.readLine("Choose an option: ");
 
-            if (choice == null) {
+            if (choice == null)
+            {
                 running = false;
             }
-            else {
-                switch (choice.trim()) {
+            else
+            {
+                switch (choice.trim())
+                {
                     case "1":
                         handleAddOrder();
                         break;
@@ -53,25 +60,37 @@ public class OrderController {
         view.showMessage("Goodbye!");
     }
 
+
     /**
-     * Asks for a food type and name until an order is added or the
-     * user cancels with 0 at the food type prompt.
+     * Asks for a food type and name until an order is added or the user cancels
+     * with 0 at the food type prompt.
      */
-    private void handleAddOrder() {
+
+    private void handleAddOrder()
+    {
         boolean added = false;
 
-        while (!added) {
+        while (!added)
+        {
             view.showFoodTypes();
             String type = view.readLine("Food type (0 to cancel): ");
 
-            if (type == null || type.trim().equals("0")) {
+            if (type == null || type.trim().equals("0"))
+            {
                 view.showMessage("Order cancelled.");
                 return;
             }
 
+            if (parseFoodType(type) == null)
+            {
+                view.showMessage("Invalid food type. Please enter 1, 2, or 3.");
+                continue;
+            }
+
             String name = view.readLine("Order name: ");
 
-            if (name == null) {
+            if (name == null)
+            {
                 view.showMessage("Order cancelled.");
                 return;
             }
@@ -80,93 +99,115 @@ public class OrderController {
         }
     }
 
+
     /**
-     * Validates the raw input, creates an Order, and adds it to
-     * the queue. Shows an error and returns false if the input is
-     * invalid, leaving the queue unchanged.
+     * Validates the raw input, creates an Order, and adds it to the queue.
+     * Shows an error and returns false if the input is invalid, leaving the
+     * queue unchanged.
      */
-    public boolean addOrder(String foodType, String name) {
+    public boolean addOrder(String foodType, String name)
+    {
         FoodType type = parseFoodType(foodType);
 
-        if (type == null) {
-            view.showMessage("Invalid food type. Enter a number from 1 to "
-                + FoodType.values().length + ".");
+        if (type == null)
+        {
+            view.showMessage(
+                "Invalid food type. Enter a number from 1 to "
+                    + FoodType.values().length + ".");
             return false;
         }
 
         String error = checkName(name);
 
-        if (error != null) {
+        if (error != null)
+        {
             view.showMessage(error);
             return false;
         }
 
-        try {
+        try
+        {
             Order order = new Order(type, name.trim());
             queue.enqueue(order);
             view.showMessage("Order added: " + order.getName());
             return true;
         }
-        catch (IllegalArgumentException e) {
+        catch (IllegalArgumentException e)
+        {
             // Backstop: the model rejected something the checks missed.
             view.showMessage("Order rejected: " + e.getMessage());
             return false;
         }
     }
 
+
     /**
-     * Removes the oldest order and tells the view which one was
-     * completed, or shows a message if nothing is waiting.
+     * Removes the oldest order and tells the view which one was completed, or
+     * shows a message if nothing is waiting.
      */
-    public void cookNextOrder() {
+    public void cookNextOrder()
+    {
         Order cooked = queue.dequeue();
 
-        if (cooked == null) {
+        if (cooked == null)
+        {
             view.showMessage("There are no pending orders to cook.");
         }
-        else {
+        else
+        {
             view.showCookedOrder(cooked);
         }
     }
 
+
     /**
-     * Gets the pending orders from the model and asks the view to
-     * display them.
+     * Gets the pending orders from the model and asks the view to display them.
      */
-    public void showPendingOrders() {
+    public void showPendingOrders()
+    {
         view.showPendingOrders(queue.getPendingOrders());
     }
 
-    private FoodType parseFoodType(String input) {
-        if (input == null) {
+
+    private FoodType parseFoodType(String input)
+    {
+        if (input == null)
+        {
             return null;
         }
 
-        try {
+        try
+        {
             int choice = Integer.parseInt(input.trim());
             FoodType[] types = FoodType.values();
 
-            if (choice >= 1 && choice <= types.length) {
+            if (choice >= 1 && choice <= types.length)
+            {
                 return types[choice - 1];
             }
 
             return null;
         }
-        catch (NumberFormatException e) {
+        catch (NumberFormatException e)
+        {
             return null;
         }
     }
 
-    private String checkName(String name) {
-        if (name == null || name.trim().isEmpty()) {
+
+    private String checkName(String name)
+    {
+        if (name == null || name.trim().isEmpty())
+        {
             return "Order name cannot be empty.";
         }
 
         String trimmed = name.trim();
 
-        if (trimmed.length() > MAX_NAME_LENGTH) {
-            return "Order name is too long (maximum "
-                + MAX_NAME_LENGTH + " characters).";
+        if (trimmed.length() > MAX_NAME_LENGTH)
+        {
+            return "Order name is too long (maximum " + MAX_NAME_LENGTH
+                + " characters).";
         }
 
         return null;
