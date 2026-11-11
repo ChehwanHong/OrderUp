@@ -144,21 +144,18 @@ Both members will review the completed application and update documentation.
 
 | File | Contributor | Contribution |
 |---|---|---|
-| `FoodType.java` | Chehwan | Defined food categories |
+| `FoodType.java` | Diya Saraf | Defined food categories |
 | `Order.java` | Chehwan | Implemented order data and validation |
 | `OrderNode.java` | Chehwan | Implemented singly linked nodes |
 | `OrderQueue.java` | Chehwan | Implemented FIFO queue operations |
 | `OrderQueueTest.java` | Chehwan | Implemented JUnit tests |
 | `ModelDriver.java` | Chehwan | Implemented independent model demonstration |
 | `OrderView.java` | Diya Saraf | Implemented console input and output |
-| `OrderController.java` | Diya Saraf, Chehwan | Implemented controller logic; improved invalid food type handling |
-| `Main.java` | Chehwan | Connected Model, View, and Controller |
+| `OrderController.java` | Diya Saraf | Implemented controller logic; improved invalid food type handling |
+| `Main.java` | Diya Saraf | Connected Model, View, and Controller |
 
 ### 7. Generative AI Usage
 
-We used generative AI assistance to help understand the project structure, implement and review the linked queue, and develop testing examples. AI was also used to troubleshoot Eclipse, JUnit configuration, and GitHub integration.
+### 7. Generative AI Usage
 
-We reviewed the suggested code, made modifications based on our requirements, and tested the application in Eclipse. In particular, we changed the Controller's input validation after identifying an issue during manual testing.
-## Generative AI Usage
-
-We used generative AI to help plan the class structure, understand linked queue implementation, and develop initial code and testing examples. We reviewed and tested the generated suggestions in Eclipse. We also used AI assistance to troubleshoot JUnit setup and GitHub integration. The final implementation and attribution will be reviewed by both team members before submission.
+We used generative AI to help us understand the class structure and how the different classes work together. It also helped us troubleshoot errors during development and understand how to fix them. After implementing our code, we used AI to review our work and check whether the classes, methods, and overall program structure matched the project requirements. We reviewed the suggestions and tested the program ourselves to make sure everything worked correctly.
