@@ -23,5 +23,11 @@ public class ModelDriver {
 
         System.out.println("Remaining orders: "
             + queue.size());
+
+        OrderQueue queue = new OrderQueue();
+        OrderView view = new OrderView();
+        OrderController controller = new OrderController(queue, view);
+ 
+        controller.run();
     }
 }
