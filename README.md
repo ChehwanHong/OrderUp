@@ -156,6 +156,4 @@ Both members will review the completed application and update documentation.
 
 ### 7. Generative AI Usage
 
-### 7. Generative AI Usage
-
 We used generative AI to help us understand the class structure and how the different classes work together. It also helped us troubleshoot errors during development and understand how to fix them. After implementing our code, we used AI to review our work and check whether the classes, methods, and overall program structure matched the project requirements. We reviewed the suggestions and tested the program ourselves to make sure everything worked correctly.
