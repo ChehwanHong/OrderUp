@@ -58,41 +58,49 @@ We manually verified the following application behaviors:
 
 The controller was improved so that an invalid food type is rejected immediately, before asking for an order name.
 
-### 4. Reflection
+## 4. Reflection
 
-#### Changes from Deliverable 2
+### Changes from Deliverable 2
 
-We followed our original class design and implemented a singly linked queue using head and tail references. The queue provides `enqueue()`, `dequeue()`, `peek()`, `isEmpty()`, `size()`, and `getPendingOrders()`.
+We followed our original plan to implement a singly linked queue using head and tail references. The queue includes `enqueue()`, `dequeue()`, `peek()`, `isEmpty()`, `size()`, and `getPendingOrders()`.
 
-We added `ModelDriver.java` to demonstrate the model without the View or Controller. We also implemented JUnit tests to verify the queue's behavior.
+We implemented `ModelDriver.java` to demonstrate that our Model can run independently without the View or Controller. This allowed us to check the queue's behavior before integrating the entire application.
 
-During integration testing, we noticed that entering an invalid food type still prompted the user for an order name. We modified `OrderController.handleAddOrder()` to validate the food type immediately. This improved input handling without changing the model.
+We also implemented `OrderQueueTest.java` using JUnit to verify the core queue operations. These tests helped us check FIFO behavior and identify potential problems with adding and removing orders.
 
-#### Model Independence
+During integration testing, we discovered that the program asked for an order name even when the user entered an invalid food type. To fix this issue, we modified `OrderController.handleAddOrder()` to validate the food type before requesting the order name.
 
-Our Model works independently of the View and Controller. The queue manages orders without reading console input or displaying messages.
+### Model Independence
 
-The Controller communicates with the Model, while the View handles user interaction. This separation makes the application easier to test, maintain, and extend.
+Our Model runs independently of the View and Controller. `OrderQueue.java` manages the orders without reading console input or displaying messages.
 
-#### Problems Solved and Remaining Questions
+We confirmed this by running `ModelDriver.java` and the JUnit tests separately from the complete application.
 
-One challenge was maintaining the correct head and tail references when adding and removing orders. We addressed this through our linked queue implementation and testing.
+### Problems Solved and Remaining Questions
 
-Another issue was validating user input at the correct time. We improved the Controller so invalid food types are rejected before the user enters an order name.
+One challenge was making sure the queue correctly updates its head, tail, and size when adding or removing orders. We addressed this through the linked queue implementation and testing.
 
-The main MVP features are implemented and the console application runs successfully.
+Another challenge was handling invalid user input. We improved the Controller to reject invalid food types immediately instead of asking for unnecessary information.
 
-We still need to expand our tests for additional edge cases and ensure the application behaves correctly with all invalid input scenarios.
+The main MVP features are implemented and the application runs successfully. However, we still need to expand automated testing for additional invalid inputs and edge cases.
+
+For Deliverable 4, we will also need to determine how to identify a specific pending order for cancellation while preserving the FIFO order of the remaining orders.
 
 ### 5. Next Steps for Deliverable 4
 
-#### Remaining Work
+Remaining Work
 
-1. Expand JUnit tests for empty queues, null orders, and queue boundary cases.
-2. Add automated tests for Controller validation and application behavior.
-3. Improve error messages and input handling where necessary.
-4. Implement an additional nontrivial feature.
-5. Perform final integration testing and review the application.
+1. Expand Queue JUnit tests (Chehwan): Add tests for empty queues, null orders, and boundary cases.
+
+2. Add Controller validation tests (Diya): Test invalid food types, empty order names, and other invalid inputs.
+
+3. Implement order cancellation in the Model (Chehwan): Add cancelOrder(int position) to OrderQueue.java and test cancellation at different positions.
+
+4. Implement cancellation in the Controller and View (Diya): Add cancelPendingOrder() to OrderController.java and update the menu and input prompts in OrderView.java.
+
+5. Final integration testing (Both): Test all MVP features, invalid inputs, and order cancellation.
+
+6. Final documentation review (Both): Update the README and verify that the implementation matches the project requirements.
 
 #### New Feature: Cancel a Pending Order
 
@@ -125,20 +133,13 @@ We will prioritize order cancellation for Deliverable 4.
 
 Estimated cooking time and completed order history are not currently committed features. We may consider them if the cancellation feature and all required functionality are completed.
 
-#### Team Responsibilities
+Team Responsibilities
 
-**Chehwan**
-- Maintain and improve the Model classes.
-- Implement queue cancellation logic.
-- Expand JUnit tests.
-- Assist with integration testing.
+Chehwan: Maintain the Model, implement queue cancellation, expand JUnit tests, and assist with integration testing.
 
-**Diya Saraf**
-- Maintain and improve the View and Controller.
-- Implement cancellation menu interactions and validation.
-- Assist with integration testing.
+Diya Saraf: Maintain the View and Controller, implement cancellation input handling, add Controller tests, and assist with integration testing.
 
-Both members will review the completed application and update documentation.
+Both team members will review the completed application and documentation.
 
 ### 6. Attribution
 
