@@ -77,4 +77,38 @@ public class OrderQueue {
 
         return orders;
     }
+
+public Order cancelOrder(int position) {
+    if (position < 1 || position > size) {
+        return null;
+    }
+
+    // Cancel the first order
+    if (position == 1) {
+        return dequeue();
+    }
+
+    OrderNode current = head;
+
+    // Move to the node before the order to cancel
+    for (int i = 1; i < position - 1; i++) {
+        current = current.getNext();
+    }
+
+    OrderNode removedNode = current.getNext();
+    Order removedOrder = removedNode.getOrder();
+
+    // Skip the canceled order
+    current.setNext(removedNode.getNext());
+
+    // Update tail if the last order was canceled
+    if (removedNode == tail) {
+        tail = current;
+    }
+
+    size--;
+
+    return removedOrder;
+}
+
 }

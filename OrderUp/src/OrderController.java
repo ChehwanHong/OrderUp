@@ -47,11 +47,16 @@ public class OrderController
                         cookNextOrder();
                         break;
                     case "4":
+                        handleCancelOrder();
+                        break;
+
+                    case "5":
                         running = false;
                         break;
+
                     default:
                         view.showMessage(
-                            "Invalid option. Enter 1, 2, 3, or 4.");
+                            "Invalid option. Enter 1, 2, 3, 4, or 5.");
                         break;
                 }
             }
@@ -166,6 +171,50 @@ public class OrderController
     public void showPendingOrders()
     {
         view.showPendingOrders(queue.getPendingOrders());
+    }
+
+
+    /**
+     * Asks the user which pending order to cancel. Handles invalid input
+     * without crashing.
+     */
+    private void handleCancelOrder()
+    {
+        if (queue.isEmpty())
+        {
+            view.showMessage("There are no pending orders to cancel.");
+            return;
+        }
+
+        showPendingOrders();
+
+        String input =
+            view.readLine("Enter the order number to cancel (0 to go back): ");
+
+        if (input == null || input.trim().equals("0"))
+        {
+            view.showMessage("Cancellation cancelled.");
+            return;
+        }
+
+        try
+        {
+            int position = Integer.parseInt(input.trim());
+            Order canceled = queue.cancelOrder(position);
+
+            if (canceled == null)
+            {
+                view.showMessage("Invalid order number.");
+            }
+            else
+            {
+                view.showMessage("Order cancelled: " + canceled.getName());
+            }
+        }
+        catch (NumberFormatException e)
+        {
+            view.showMessage("Invalid input. Please enter a number.");
+        }
     }
 
 
