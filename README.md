@@ -44,7 +44,15 @@ To run the tests, right-click `OrderQueueTest.java` and select **Run As → JUni
 
 ### 3. Testing
 
-We tested the Queue independently using JUnit and tested the complete application through the console.
+We expanded our automated tests to cover normal behavior, invalid inputs, and edge cases in the Model.
+
+Our JUnit tests check FIFO order, empty Queue operations, null orders, invalid cancellation positions, cancellation at different positions, and order validation.
+
+We also tested interleaved enqueue and dequeue operations to verify that orders remain in the correct FIFO order.
+
+The tests run independently of the View and Controller.
+
+We manually tested the console application, including adding orders, viewing pending orders, cooking orders, canceling orders, and handling invalid menu selections.
 
 All 13 current JUnit tests passed.
 
