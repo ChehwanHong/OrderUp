@@ -172,11 +172,11 @@ Demonstrate an invalid cancellation position and show the JUnit test results.
 | `OrderNode.java` | Chehwan | Wrote linked Queue nodes |
 | `OrderQueue.java` | Chehwan | Wrote FIFO Queue and cancellation logic, GenAI-assisted |
 | `OrderQueueTest.java` | Chehwan | Wrote Queue and cancellation tests, GenAI-assisted |
-| `OrderTest.java` | Chehwan | Added order validation tests, GenAI-assisted |
+| `OrderTest.java` | Diya Saraf | Added order validation tests, GenAI-assisted |
 | `ModelDriver.java` | Chehwan | Wrote independent Model demonstration |
-| `OrderView.java` | Diya Saraf; Chehwan | Original View implementation; cancellation menu update |
-| `OrderController.java` | Diya Saraf; Chehwan | Original Controller implementation; cancellation handling update |
-| `OrderControllerTest.java` | Chehwan | Added Controller validation and cancellation tests, GenAI-assisted |
+| `OrderView.java` | Diya Saraf | Original View implementation; cancellation menu update |
+| `OrderController.java` | Diya Saraf | Original Controller implementation; cancellation handling update |
+| `OrderControllerTest.java` | Diya Saraf | Added Controller validation and cancellation tests, GenAI-assisted |
 | `Main.java` | Diya Saraf | Connected Model, View, and Controller |
 
 ## 7. Generative AI Usage
