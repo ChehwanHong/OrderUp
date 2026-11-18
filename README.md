@@ -115,10 +115,11 @@ We also need to complete our final review of the application and documentation b
 
 ### Making Future Changes Easier
 
-Our MVC design makes it easier to add new features because the order management logic is separated from the console interface.
+One design improvement that would make future features easier is moving more order-related operations into reusable Model methods. For example, if we add completed order history, we could create a separate class to manage completed orders instead of adding that responsibility to the View or Controller.
 
-For future features, we could add more reusable methods to the Model and Controller so that new functionality requires fewer changes to existing classes.
+We could also separate input parsing from the Controller's menu handling. This would make validation easier to test independently and reduce the number of changes needed when adding new menu options.
 
+Our current MVC structure already helped us implement cancellation without changing the existing Order, OrderNode, FoodType, or Main classes. Keeping these responsibilities separate should make future features easier to implement and test.
 ## 5. Next Steps
 
 ### Remaining Work for the Final Build
