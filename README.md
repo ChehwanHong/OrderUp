@@ -2,147 +2,125 @@
 
 ## Project Overview
 
-OrderUp is a Java-based restaurant order management application that helps kitchen staff organize and prepare customer orders. Users can add orders, view pending orders, cook orders in FIFO order, and cancel pending orders.
+OrderUp is a Java-based restaurant order management application that helps kitchen staff organize customer orders. Users can add orders, view pending orders, cook orders in FIFO order, and cancel pending orders.
 
-The application uses a singly linked queue and follows the Model-View-Controller (MVC) design pattern. The Model manages order data, the View displays information, and the Controller handles user input and communicates with the Model.
+The application uses a singly linked queue and follows the Model-View-Controller (MVC) design pattern. The Model manages order data, the View displays information, and the Controller handles user input.
 
 ## Deliverable 4 – Second Prototype + Tests
 
 ### 1. Current Implementation
 
 **Model**
-
 - `FoodType.java` – Defines APPETIZER, MAIN, and DESSERT.
-- `Order.java` – Stores food type and order name and validates order data.
-- `OrderNode.java` – Represents a node in the singly linked queue.
-- `OrderQueue.java` – Implements FIFO queue operations and allows pending orders to be canceled by position.
+- `Order.java` – Stores and validates order information.
+- `OrderNode.java` – Represents a node in the linked queue.
+- `OrderQueue.java` – Implements FIFO operations and pending order cancellation.
 
-**View**
+**View and Controller**
+- `OrderView.java` – Displays menus, orders, and messages.
+- `OrderController.java` – Validates user input and connects the View to the Model.
 
-- `OrderView.java` – Displays the menu, pending orders, completed orders, and messages. It also reads user input.
-
-**Controller**
-
-- `OrderController.java` – Validates user input, communicates with the Model, and controls the application.
-
-**Application and Testing**
-
-- `Main.java` – Connects the Model, View, and Controller.
+**Application and Tests**
+- `Main.java` – Starts the application.
 - `ModelDriver.java` – Demonstrates the Model independently.
-- `OrderQueueTest.java` – Contains JUnit tests for queue operations and order cancellation.
+- `OrderQueueTest.java` – Tests Queue operations and cancellation.
+- `OrderTest.java` – Tests order validation.
+- `OrderControllerTest.java` – Tests Controller behavior and invalid input handling.
 
 ### 2. How to Run
 
 1. Clone or download the repository and import the OrderUp project into Eclipse.
 2. Make sure JUnit 4 is available in the project's build path.
-3. Open `Main.java` and select **Run As → Java Application**.
-4. Use the console menu to add orders, view pending orders, cook orders, cancel orders, or exit.
+3. Right-click `Main.java` and select **Run As → Java Application**.
+4. Use the console menu to add, view, cook, or cancel orders.
 
-To run the Model independently, open `ModelDriver.java` and select **Run As → Java Application**.
+To run the Model independently, execute `ModelDriver.java` as a Java Application.
 
-To run the tests, right-click `OrderQueueTest.java` and select **Run As → JUnit Test**.
+To run the tests, right-click each test file and select **Run As → JUnit Test**.
 
 ### 3. Testing
 
-We expanded our automated tests to cover normal behavior, invalid inputs, and edge cases in the Model.
+We ran 33 JUnit tests, and all 33 passed.
 
-Our JUnit tests check FIFO order, empty Queue operations, null orders, invalid cancellation positions, cancellation at different positions, and order validation.
+- `OrderQueueTest.java`: 17 tests
+- `OrderTest.java`: 8 tests
+- `OrderControllerTest.java`: 8 tests
 
-We also tested interleaved enqueue and dequeue operations to verify that orders remain in the correct FIFO order.
+The tests cover normal Queue operations, FIFO behavior, empty Queues, invalid orders, and cancellation at different positions.
 
-The tests run independently of the View and Controller.
+We also tested interleaved enqueue and dequeue operations to verify that the FIFO order remains correct.
 
-We manually tested the console application, including adding orders, viewing pending orders, cooking orders, canceling orders, and handling invalid menu selections.
+Our tests check invalid cancellation positions, null orders, empty names, overly long names, invalid characters, and invalid Controller input.
 
-All 13 current JUnit tests passed.
+The Model tests run independently of the View and Controller.
 
-Our tests cover:
-
-- Adding orders to the Queue.
-- Removing orders in FIFO order.
-- Viewing the next order without removing it.
-- Handling an empty Queue.
-- Rejecting null orders.
-- Viewing pending orders without changing the Queue.
-- Adding another order after the Queue becomes empty.
-- Canceling the first, middle, and last pending orders.
-- Handling invalid cancellation positions.
-- Attempting cancellation when the Queue is empty.
-- Preserving FIFO order after interleaved enqueue and dequeue operations.
-
-We also manually tested the cancellation feature through the console. The View displays the pending orders with their positions, and the user can select an order to cancel.
-
-The Controller handles invalid cancellation input without crashing the application.
+We manually tested the console application and confirmed that adding, viewing, cooking, and canceling orders work correctly.
 
 ## 4. Reflection
 
 ### How Our Design Absorbed the Change
 
-For Deliverable 4, we implemented the order cancellation feature that we planned in Deliverable 3.
+For Deliverable 4, we implemented the pending order cancellation feature that we planned in Deliverable 3.
 
-We added `cancelOrder(int position)` to `OrderQueue.java`. This method removes an order from a selected position while keeping the remaining orders in their original FIFO order. It also updates the head, tail, and size when necessary.
+We added `cancelOrder(int position)` to `OrderQueue.java`. This method removes a selected pending order while preserving the FIFO order of the remaining orders. It also updates the head, tail, and size when necessary.
 
-The feature required changes to these files:
+The feature required changes to `OrderQueue.java`, `OrderController.java`, `OrderView.java`, and `OrderQueueTest.java`.
 
-- `OrderQueue.java` – Added the cancellation logic.
-- `OrderQueueTest.java` – Added cancellation tests.
-- `OrderController.java` – Added cancellation input handling.
-- `OrderView.java` – Added the cancellation menu option.
+This matched our D3 prediction. We expected these classes and tests to change, while `FoodType.java`, `Order.java`, `OrderNode.java`, and `Main.java` would remain unchanged.
 
-This matched our Deliverable 3 prediction. We expected the Model, Controller, View, and tests to change, while `Order.java`, `OrderNode.java`, `FoodType.java`, and `Main.java` would remain unchanged.
-
-One important detail was handling cancellation at different positions. Removing the first order was different from removing a middle or last order because the Queue's head and tail references needed to remain correct.
+One important challenge was handling cancellation at different positions. Canceling the first, middle, and last orders required careful updates to the linked Queue.
 
 ### Model-View Separation
 
-Our design kept the Model separate from the View.
+Our MVC structure helped us add the cancellation feature without mixing responsibilities.
 
-The View displays the menu and receives user input. The Controller validates the input and calls `cancelOrder()` in the Model. The Model removes the selected order and returns the result.
+The View displays pending orders and receives user input. The Controller validates the selected position and calls the Model. The Model removes the order and returns the result.
 
-The View does not directly modify the Queue or store a separate copy of the pending orders.
+The View does not store a separate copy of the Queue or directly change the Model.
 
-The cancellation feature required a new menu option and Controller method, but it did not require the View to understand how the linked Queue works.
+The View needed a new menu option, but it did not need to understand how the linked Queue works internally.
 
 ### Changes from Our D3 Plan
 
-We followed our original plan to implement cancellation using the order's displayed position.
+We followed our original plan to implement cancellation using the displayed order position.
 
-We originally planned a Controller method named `cancelPendingOrder()`, but the implemented method is named `handleCancelOrder()`. The behavior is the same.
+Our D3 plan called the Controller method `cancelPendingOrder()`, but we implemented it as `handleCancelOrder()`. The functionality remained the same.
 
-We also expanded our JUnit tests to check cancellation at different positions, invalid positions, empty Queues, and FIFO behavior after interleaved operations.
+We also expanded testing beyond our original plan by adding separate tests for order validation and Controller behavior.
 
-We kept the existing MVC structure and did not need to redesign the application.
+We did not need to redesign the existing Model or change the classes that we expected to remain unchanged.
 
 ### What Does Not Work Yet
 
-The main MVP features are implemented, including adding, viewing, cooking, and canceling orders.
+The main MVP features are implemented and working.
 
-We still need to expand automated testing for additional validation cases and confirm that all invalid inputs are handled correctly.
+We still need to complete final integration testing and review the remaining edge cases before the final submission.
 
-We also need to complete our final review of the application and documentation before the final submission.
+Estimated cooking time and completed order history have not been implemented.
 
 ### Making Future Changes Easier
 
-One design improvement that would make future features easier is moving more order-related operations into reusable Model methods. For example, if we add completed order history, we could create a separate class to manage completed orders instead of adding that responsibility to the View or Controller.
+One design improvement would be separating input parsing and validation into reusable methods. This would make future Controller features easier to test and reduce repeated code.
 
-We could also separate input parsing from the Controller's menu handling. This would make validation easier to test independently and reduce the number of changes needed when adding new menu options.
+For example, if we add a feature that allows users to edit an order, we could reuse the same input validation logic instead of writing it again.
 
-Our current MVC structure already helped us implement cancellation without changing the existing Order, OrderNode, FoodType, or Main classes. Keeping these responsibilities separate should make future features easier to implement and test.
+Our MVC structure already makes future changes easier because the Model handles order logic independently of the console interface.
+
 ## 5. Next Steps
 
 ### Remaining Work for the Final Build
 
-1. Complete additional JUnit tests for edge cases and invalid inputs.
-2. Review the Controller's input validation.
-3. Test all features together through the console.
-4. Fix any problems discovered during final testing.
-5. Review the README and prepare the final demonstration.
+1. Review all existing JUnit tests and add any missing edge cases.
+2. Complete final integration testing for all menu options.
+3. Verify that invalid inputs do not crash the application.
+4. Fix any issues discovered during testing.
+5. Finalize documentation and prepare the demonstration.
 
 ### Stretch Goals
 
-We are committing to completing and improving the order cancellation feature.
+We are committing to keeping order cancellation as part of the final application.
 
-We are not committing to estimated cooking time or completed order history for the final build. We want to prioritize a reliable application with complete testing.
+We are dropping estimated cooking time and completed order history from the final build so we can focus on reliability and testing.
 
 ### Three-Minute Demo Plan
 
@@ -156,55 +134,55 @@ Add three orders and display the pending Queue.
 
 **1:15–2:00 — Cancel an Order**
 
-Cancel the second pending order and display the Queue again to show that the remaining orders keep their FIFO order.
+Cancel the second order and display the Queue again to show that the remaining orders stay in FIFO order.
 
 **2:00–2:30 — Cook an Order**
 
 Cook the next order and show that the oldest remaining order is removed first.
 
-**2:30–3:00 — Bad Input and Testing**
+**2:30–3:00 — Bad Input and Tests**
 
-Demonstrate an invalid cancellation position and briefly show the JUnit test results.
+Demonstrate an invalid cancellation position and show the JUnit test results.
 
 ### Team Responsibilities
 
 **Chehwan**
-
 - Maintain the Model classes.
-- Implement and test order cancellation in `OrderQueue.java`.
-- Expand JUnit tests for Queue behavior and invalid inputs.
-- Help with final integration testing.
+- Implement and test order cancellation.
+- Expand JUnit tests for Queue operations and invalid inputs.
+- Assist with final integration testing.
 
 **Diya Saraf**
-
 - Maintain the View and Controller.
-- Handle cancellation input and menu interaction.
+- Review cancellation input handling.
 - Review Controller validation.
-- Help with final integration testing.
+- Assist with final integration testing.
 
 **Both Members**
-
-- Review the final application.
-- Prepare the demonstration.
-- Complete and verify the README.
+- Complete final application testing.
+- Review the README.
+- Prepare the three-minute demonstration.
 
 ## 6. Attribution
 
 | File | Contributor | Contribution |
 |---|---|---|
-| `FoodType.java` | Diya Saraf | Defined food categories |
+| `FoodType.java` | Diya Saraf | Wrote food categories |
 | `Order.java` | Chehwan | Wrote order data and validation |
-| `OrderNode.java` | Chehwan | Wrote linked Queue node implementation |
-| `OrderQueue.java` | Chehwan | Wrote FIFO Queue operations and added cancellation logic |
-| `OrderQueueTest.java` | Chehwan | Wrote and expanded JUnit tests, including cancellation tests |
+| `OrderNode.java` | Chehwan | Wrote linked Queue nodes |
+| `OrderQueue.java` | Chehwan | Wrote FIFO Queue and cancellation logic, GenAI-assisted |
+| `OrderQueueTest.java` | Chehwan | Wrote Queue and cancellation tests, GenAI-assisted |
+| `OrderTest.java` | Chehwan | Added order validation tests, GenAI-assisted |
 | `ModelDriver.java` | Chehwan | Wrote independent Model demonstration |
-| `OrderView.java` | Diya Saraf | Wrote console interface and added cancellation menu option |
-| `OrderController.java` | Diya Saraf | Wrote input validation and Controller logic, including cancellation handling |
+| `OrderView.java` | Diya Saraf; Chehwan | Original View implementation; cancellation menu update |
+| `OrderController.java` | Diya Saraf; Chehwan | Original Controller implementation; cancellation handling update |
+| `OrderControllerTest.java` | Chehwan | Added Controller validation and cancellation tests, GenAI-assisted |
 | `Main.java` | Diya Saraf | Connected Model, View, and Controller |
 
 ## 7. Generative AI Usage
 
-We used generative AI to help us understand the project structure, review our code, and develop ideas for JUnit tests. For Deliverable 4, AI helped suggest how to implement order cancellation in the linked Queue and how to test different cancellation cases.
+We used generative AI to help us review code and suggest implementations for the order cancellation feature.
 
-We reviewed the suggested code and made sure it matched our existing design. 
-We ran the JUnit tests and manually tested the application to check that the implemented features worked correctly.
+For Deliverable 4, AI helped handling invalid inputs, order validation, and Controller behavior. We reviewed the suggestion and implemented features.
+
+We tested the application ourselves and checked that the implemented features matched the project requirements.
